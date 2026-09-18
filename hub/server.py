@@ -161,7 +161,7 @@ def api_diagnostics(project: str = '', section: str = '') -> dict:
         row['marks'] += a.get('total', 0)
         row['out_of'] += a.get('out_of', 0)
         for part, v in (a.get('parts') or {}).items():
-            if v.get('errors'):
+            if v.get('errors') or v.get('weak'):
                 row['lost_parts'][part] = row['lost_parts'].get(part, 0) + 1
     out = []
     for (proj, sec), row in rows.items():
