@@ -97,20 +97,27 @@
       "judge": "deepseek/deepseek-v4-pro",
       "total": 9,
       "out_of": 10,
+      "part_max": {"第1题": 3, "第2题": 3, "第3题": 4},
       "parts": {
-        "第3题": {"marks": 3, "errors": ["未指出边界条件"]}
+        "第3题": {"marks": 3, "errors": ["未指出边界条件"], "weak": true}
       }
     }
   ]
 }
 ```
 
+`part_max` 存下每个小问的满分，`weak` 是当时算出的弱项标记（**有 errors 或得分低于满分**）。
+存这两个字段的原因：早期版本只存 `errors`，导致"评语里说了扣分但 errors 为空"的小问在
+错项画像里被漏掉，而实时返回的 `weak_points` 却包含它——同一个页面上下两个数字对不上。
+现在实测有单测守着：`tools/test_mark_offline.py`。
+`part_max` 则让日后的记录可以离线重算弱项，不必再猜。
+
 `/api/diagnostics` 的聚合口径：
 
 | 字段 | 含义 |
 |---|---|
 | `score_rate` | 该节次累计得分 ÷ 累计满分，**升序排**（越低越该重讲） |
-| `lost_parts` | 该节次里"没拿满分或被标记错误"的小问 → 出现次数，降序 |
+| `lost_parts` | 该节次里"没拿满分或被标记错误"的小问 → 出现次数，降序（统计口径：`errors` 或 `weak` 任一为真） |
 | `attempts` | 该节次被批改的次数 |
 
 弱项判定：某个小问**有 errors 条目**，或**得分低于该小问满分**（满分从 `parts` 里的

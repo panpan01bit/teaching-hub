@@ -214,6 +214,18 @@ def mark_script(payload: dict) -> dict:
                              model=str(judge.get('model') or 'deepseek-v4-pro'),
                              paper_id=str(payload.get('paper_id') or 'paper'))
     result.pop('raw', None)
+
+    # 每个小问的满分，从 parts 里的 [N] 解析；弱项 = 有 errors 或没拿满分
+    part_max = {}
+    for p in parts:
+        m = re.search(r'\[(\d+)\]', p)
+        if m:
+            part_max[re.sub(r'\s*\[.*$', '', p).strip()] = int(m.group(1))
+
+    def is_weak(k, v):
+        cap = part_max.get(k)
+        return bool(v.get('errors')) or (cap is not None and v['marks'] < cap)
+
     record = {'id': 'a-%d' % int(time.time() * 1000),
               'ts': time.strftime('%Y-%m-%dT%H:%M:%S'),
               'project': str(payload.get('project') or ''),
@@ -221,8 +233,9 @@ def mark_script(payload: dict) -> dict:
               'student': str(payload.get('student') or ''),
               'judge': '%s/%s' % (judge.get('provider'), judge.get('model')),
               'total': result['total'], 'out_of': result['out_of'],
-              'parts': {k: {'marks': v['marks'], 'errors': v.get('errors', [])}
-                        for k, v in result['parts'].items()}}
+              'part_max': part_max,     # 存档满分，便于日后回填/重算弱项
+              'parts': {k: {'marks': v['marks'], 'errors': v.get('errors', []),
+                            'weak': is_weak(k, v)} for k, v in result['parts'].items()}}
     with _locks['attempts']:
         data = read_json(ATTEMPTS_PATH(), {'attempts': []})
         data['attempts'].append(record)
@@ -232,18 +245,7 @@ def mark_script(payload: dict) -> dict:
     except OSError:
         pass
     result['attempt_id'] = record['id']
-    # 弱项 = 有错误清单的小问，或没拿满分的小问（评语里说了扣分理由但没填 errors 的情况）
-    part_max = {}
-    for p in parts:
-        m = re.search(r'\[(\d+)\]', p)
-        if m:
-            part_max[re.sub(r'\s*\[.*$', '', p).strip()] = int(m.group(1))
-    weak = []
-    for k, v in result['parts'].items():
-        cap = part_max.get(k)
-        if v.get('errors') or (cap is not None and v['marks'] < cap):
-            weak.append(k)
-    result['weak_points'] = weak
+    result['weak_points'] = [k for k, v in result['parts'].items() if is_weak(k, v)]
     return result
 
 
