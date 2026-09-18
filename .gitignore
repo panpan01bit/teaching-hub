@@ -1,0 +1,11 @@
+# 运行时数据：索引、工作台数据、批改记录（含学生答案）——绝不入库
+/data/
+*.tmp
+*__pycache__/
+*.pyc
+.DS_Store
+
+# 你自己的资料目录（如果放在仓库里）
+/material/
+/courses/
+*.pdf

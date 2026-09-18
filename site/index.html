@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教学资料中台</title>
+<link rel="stylesheet" href="/hub/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" onclick="location.hash='#/'">🗂️ 教学资料中台</div>
+  <nav class="nav">
+    <a href="#/" data-nav="home">总览</a>
+    <a href="#/library" data-nav="library">资源库</a>
+    <a href="#/mark" data-nav="mark">✍️ 批改台</a>
+    <a href="#/help" data-nav="help">说明</a>
+  </nav>
+  <input id="global-q" type="search" placeholder="搜全库：文件名 / 文档正文…"
+         onkeydown="if(event.key==='Enter')location.hash='#/library?q='+encodeURIComponent(this.value)">
+</header>
+<main id="app"></main>
+<script src="/hub/app.js"></script>
+</body>
+</html>

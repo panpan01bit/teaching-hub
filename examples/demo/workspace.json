@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "seededAt": "2026-09-18",
+  "projects": [
+    {
+      "id": "econ101",
+      "type": "course",
+      "name": "示例课程 A · 应用经济学入门",
+      "subtitle": "6 节次 · 项目制",
+      "level": "高中",
+      "status": "active",
+      "progress": 60,
+      "notes": "虚构的示例课程，用来演示中台结构。所有内容均为自造，可自由修改。",
+      "tags": ["demo"],
+      "goals": [
+        {"id": "g-1", "text": "6 节次资料齐备", "done": true},
+        {"id": "g-2", "text": "每节配一个真实案例", "done": false}
+      ],
+      "sections": [
+        {
+          "id": "s-1", "title": "节次1 供需与价格", "order": 1,
+          "path": "courses/econ101/week1", "status": "taught",
+          "notes": "产出：用供需图解释一次价格变动",
+          "blocks": [
+            {"id": "b-1", "kind": "knowledge", "title": "需求曲线与移动",
+             "body": "价格变化引起沿曲线移动；收入、偏好、替代品价格引起曲线移动。", "refs": []},
+            {"id": "b-2", "kind": "case", "title": "案例：某年香蕉减产",
+             "body": "供给左移导致价格上涨，需求量沿需求曲线下降。", "refs": ["courses/econ101/week1/case_banana.md"]}
+          ]
+        },
+        {
+          "id": "s-2", "title": "节次2 弹性与定价", "order": 2,
+          "path": "courses/econ101/week2", "status": "ready", "notes": "",
+          "blocks": [
+            {"id": "b-3", "kind": "knowledge", "title": "价格弹性",
+             "body": "PED = 需求量变化% ÷ 价格变化%；弹性小于 1 时提价增加收入。", "refs": []}
+          ]
+        },
+        {
+          "id": "s-3", "title": "节次3 市场失灵", "order": 3,
+          "path": "courses/econ101/week3", "status": "draft", "notes": "",
+          "blocks": [
+            {"id": "b-4", "kind": "activity", "title": "课堂活动：小区噪音案",
+             "body": "分组讨论负外部性，画出社会成本与私人成本，给出两种政策方案。", "refs": []}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "capstone",
+      "type": "course",
+      "name": "示例课程 B · 结题项目写作",
+      "subtitle": "3 节次 · 写作工坊",
+      "level": "高中", "status": "paused", "progress": 25,
+      "notes": "演示第二个项目的结构。",
+      "tags": ["demo", "writing"], "goals": [],
+      "sections": [
+        {"id": "s-10", "title": "节次1 问题定义", "order": 1, "path": "courses/capstone", "status": "draft",
+         "notes": "", "blocks": [
+           {"id": "b-10", "kind": "knowledge", "title": "好问题的四个标准",
+            "body": "具体、可测、有受众、有边界。", "refs": []}]}
+      ]
+    }
+  ],
+  "links": [
+    {"id": "l-1", "title": "示例外部链接", "url": "https://example.com", "tags": ["demo"]}
+  ],
+  "plans": [
+    {"id": "pl-1", "name": "节次1 课堂顺序",
+     "items": [{"ref": "b-1", "note": "Hook 5 分钟"}, {"ref": "b-2", "note": "案例 15 分钟"}]}
+  ]
+}
