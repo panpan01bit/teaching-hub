@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Comment</key>
+	<string>思铺备课工作台 · 常驻本地服务（127.0.0.1:8765）。注意：launchd 直启的进程默认没有桌面文件夹访问权限（TCC），若读取 /Users/2/Desktop/思铺备课 下的资料报 Operation not permitted，需要在「系统设置 → 隐私与安全性 → 完全磁盘访问权限」里给 /usr/bin/python3 授权。日志见 ~/Library/Logs/beike-hub.log</string>
+	<key>Label</key>
+	<string>com.sipu.beike-hub</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/python3</string>
+		<string>/Users/2/Desktop/思铺备课/备课工作台/server.py</string>
+		<string>8765</string>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>/Users/2/Desktop/思铺备课/备课工作台</string>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PAPER_GRADER_PATH</key>
+		<string>/Users/2/Desktop/AI_Root/paper-grader</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+	</dict>
+	<key>StandardOutPath</key>
+	<string>/Users/2/Library/Logs/beike-hub.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/2/Library/Logs/beike-hub.log</string>
+</dict>
+</plist>

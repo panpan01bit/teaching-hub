@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  macOS LaunchAgent template for teaching-hub.
+
+  IMPORTANT — TCC: a process started directly by launchd does NOT inherit your terminal's
+  Desktop/Documents permission. If --root points into ~/Desktop or ~/Documents, the agent
+  will crash-loop with "Operation not permitted" (exit code 2) until you grant Full Disk
+  Access to /usr/bin/python3 (System Settings → Privacy & Security → Full Disk Access).
+  See deploy/README.md.
+
+  Install:
+    cp deploy/com.example.teaching-hub.plist.template ~/Library/LaunchAgents/com.example.teaching-hub.plist
+    # edit the paths + Label inside
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.teaching-hub.plist
+    curl -s http://127.0.0.1:8770/api/ping
+
+  Remove:
+    launchctl bootout gui/$(id -u)/com.example.teaching-hub
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.example.teaching-hub</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/python3</string>
+		<string>/Users/YOU/teaching-hub/hub/server.py</string>
+		<string>--root</string>
+		<string>/Users/YOU/teaching-hub/examples/demo/files</string>
+		<string>--data</string>
+		<string>/Users/YOU/teaching-hub/data</string>
+		<string>--port</string>
+		<string>8770</string>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>/Users/YOU/teaching-hub</string>
+	<!-- enable the marking desk (optional): point this at the paper-grader checkout -->
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PAPER_GRADER_PATH</key>
+		<string>/Users/YOU/paper-grader</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+	</dict>
+	<key>StandardOutPath</key>
+	<string>/Users/YOU/Library/Logs/teaching-hub.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/YOU/Library/Logs/teaching-hub.log</string>
+</dict>
+</plist>
